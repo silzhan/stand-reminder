@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>该起身了</title>
+    <link rel="stylesheet" href="../shared/tokens.css" />
+    <link rel="stylesheet" href="reminder.css" />
+  </head>
+  <body data-level="0">
+    <section class="reminder-card" role="dialog" aria-labelledby="headline" aria-modal="false">
+      <div class="accent-bar" aria-hidden="true"></div>
+
+      <header class="reminder-head">
+        <div class="brand-line">
+          <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.4"></circle>
+            <circle cx="12" cy="7.7" r="1.9" fill="currentColor"></circle>
+            <path
+              d="M12 10.4v5m0-3.4l-2.3 2m2.3-2l2.3 1.6m-2.3 1.8l-1.4 2.8m1.4-2.8l1.6 2.8"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <span class="brand-name">起身助手</span>
+          <span class="brand-sep" aria-hidden="true"></span>
+          <span class="brand-sub">久坐提醒</span>
+        </div>
+        <span class="alert-badge" id="alert-badge">到时间了</span>
+      </header>
+
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow" id="eyebrow">已连续坐着 45 分钟</p>
+          <h1 id="headline">该起身了</h1>
+          <p class="lead" id="lead">站起来走几步，让腰背换个姿势。</p>
+        </div>
+        <div class="hero-mark" aria-hidden="true">
+          <svg viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="41" fill="none" stroke="currentColor" stroke-width="1" opacity="0.18"></circle>
+            <path
+              d="M11 58c15-23 38-32 67-28"
+              fill="none"
+              stroke="#e8b978"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            ></path>
+            <circle cx="73" cy="29" r="3.3" fill="#e8b978"></circle>
+            <circle cx="44" cy="25" r="7" fill="#205247"></circle>
+            <path
+              d="M44 34v16m0-10l-9 6m9-6l9 5m-9 5l-6 11m6-11l6 11"
+              fill="none"
+              stroke="#205247"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <span class="tip-title">这次可以试试</span>
+        <p id="tip-text">起身慢走几步，让身体换个姿势。</p>
+      </div>
+
+      <p class="disclaimer" id="disclaimer-text">
+        本工具仅提供久坐提醒，不构成医疗建议。若疼痛、麻木或无力持续或加重，请停止活动并咨询医生。
+      </p>
+
+      <div class="actions">
+        <button class="btn-start" id="start-break" type="button">
+          <span class="btn-start-copy">
+            <span class="btn-start-label">已起身并休息</span>
+            <small id="stand-duration">休息 5 分钟，慢慢走一走</small>
+          </span>
+          <svg class="btn-arrow" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 10h11m-4-4l4 4-4 4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </button>
+        <div class="snooze-row">
+          <button class="btn-snooze" id="snooze-5" type="button" data-minutes="5">
+            稍后 5 分钟
+          </button>
+          <button class="btn-snooze" id="snooze-10" type="button" data-minutes="10">
+            稍后 10 分钟
+          </button>
+        </div>
+        <p class="action-status" id="action-status" role="status" aria-live="polite" hidden></p>
+        <p class="action-error" id="action-error" role="alert" hidden></p>
+      </div>
+    </section>
+
+    <script type="module" src="reminder.js"></script>
+  </body>
+</html>

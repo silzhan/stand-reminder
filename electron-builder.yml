@@ -1,0 +1,36 @@
+appId: com.standreminder.app
+productName: 起身助手
+copyright: Copyright © 2026
+asar: true
+directories:
+  output: dist
+  buildResources: build
+files:
+  - package.json
+  - src/**/*
+extraResources:
+  - from: build/icon.png
+    to: icon.png
+  - from: build/icon.ico
+    to: icon.ico
+  - from: build/tray.png
+    to: tray.png
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.ico
+  artifactName: StandReminder-Setup-${version}.${ext}
+  requestedExecutionLevel: asInvoker
+nsis:
+  include: build/installer.nsh
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: 起身助手
+  uninstallDisplayName: 起身助手
+  runAfterFinish: true

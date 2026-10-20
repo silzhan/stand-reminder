@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>起身助手</title>
+    <link rel="stylesheet" href="../shared/tokens.css" />
+    <link rel="stylesheet" href="compact.css" />
+  </head>
+  <body>
+    <section class="widget" id="widget" hidden>
+      <div class="widget-glow" aria-hidden="true"></div>
+      <div class="widget-top">
+        <div class="widget-identity">
+          <span class="status-dot" id="widget-dot" aria-hidden="true"></span>
+          <span class="widget-state" id="widget-state" aria-live="polite">准备中</span>
+        </div>
+        <span class="widget-clock numeric" id="widget-clock">--:--</span>
+      </div>
+      <div class="widget-track" aria-hidden="true">
+        <svg viewBox="0 0 100 4" preserveAspectRatio="none">
+          <rect class="track" x="0" y="0" width="100" height="4" rx="2"></rect>
+          <rect
+            class="fill"
+            id="widget-progress"
+            x="0"
+            y="0"
+            width="100"
+            height="4"
+            rx="2"
+          ></rect>
+        </svg>
+      </div>
+      <div class="widget-bottom">
+        <span class="widget-hint" id="widget-hint">正在读取状态</span>
+        <div class="widget-actions">
+          <button
+            class="btn btn-primary"
+            id="widget-primary"
+            type="button"
+            title="暂停 30 分钟"
+          >
+            暂停
+          </button>
+          <button class="btn btn-ghost" id="widget-board" type="button" title="打开看板">
+            看板
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="orb" id="orb" hidden>
+      <svg class="orb-ring" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="orb-track" cx="50" cy="50" r="45" pathLength="100"></circle>
+        <circle
+          class="orb-fill"
+          id="orb-progress"
+          cx="50"
+          cy="50"
+          r="45"
+          pathLength="100"
+          stroke-dasharray="100"
+          stroke-dashoffset="0"
+          transform="rotate(-90 50 50)"
+        ></circle>
+      </svg>
+      <button
+        class="orb-center"
+        id="orb-center"
+        type="button"
+        aria-label="打开起身助手看板"
+        title="打开看板"
+      >
+        <span class="orb-number">
+          <span class="orb-value numeric" id="orb-value">--</span>
+          <span class="orb-unit" id="orb-unit"></span>
+        </span>
+        <span class="orb-label" id="orb-label">待机</span>
+      </button>
+    </div>
+
+    <script type="module" src="compact.js"></script>
+  </body>
+</html>

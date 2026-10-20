@@ -1,0 +1,118 @@
+:root {
+  color-scheme: light;
+  --font-ui: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB",
+    "Segoe UI", sans-serif;
+  --font-display: "Segoe UI Variable Display", "Bahnschrift", "Microsoft YaHei UI",
+    "Segoe UI", sans-serif;
+
+  --pine-950: #0c1f1a;
+  --pine-900: #102a23;
+  --pine-850: #14352c;
+  --pine-800: #194238;
+  --pine-700: #205247;
+  --pine-600: #2b6859;
+  --pine-500: #3a7c6b;
+  --pine-300: #8ab2a5;
+  --pine-200: #bfd6ce;
+
+  --cream-50: #fcf8f0;
+  --cream-100: #f7f0e2;
+  --cream-200: #efe4d1;
+  --cream-300: #e2d3ba;
+  --cream-400: #cdbb9e;
+
+  --amber-200: #f7e3bf;
+  --amber-300: #f0d09a;
+  --amber-400: #e8b978;
+  --amber-500: #dc9f4e;
+  --amber-600: #bd7f31;
+
+  --clay-400: #d68a6e;
+  --clay-500: #c56d50;
+  --clay-600: #a9543b;
+
+  --ink-900: #17231f;
+  --ink-700: #3a4a44;
+  --ink-500: #68766f;
+  --ink-400: #8a968f;
+
+  --success-500: #3a7c6b;
+  --danger-500: #b5533a;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  --shadow-soft: 0 18px 40px rgba(12, 31, 26, 0.14);
+  --shadow-card: 0 8px 24px rgba(35, 44, 38, 0.08);
+
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-ui);
+  color: var(--ink-900);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  background: none;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--amber-500);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(58, 74, 68, 0.24);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(58, 74, 68, 0.38);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.numeric {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}

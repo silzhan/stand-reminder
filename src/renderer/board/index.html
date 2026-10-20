@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>起身助手</title>
+    <link rel="stylesheet" href="../shared/tokens.css" />
+    <link rel="stylesheet" href="board.css" />
+  </head>
+  <body>
+    <div class="board-shell">
+      <header class="titlebar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="9" fill="#194238"></rect>
+            <path
+              d="M8 22.5c3.2-5.4 8.4-8.2 15.8-8.2"
+              fill="none"
+              stroke="#e8b978"
+              stroke-width="2.3"
+              stroke-linecap="round"
+            ></path>
+            <circle cx="23.8" cy="14.3" r="2.1" fill="#e8b978"></circle>
+            <circle cx="15.8" cy="10.2" r="2.6" fill="#f7f0e2"></circle>
+            <path
+              d="M15.6 14.1l-.8 6.2m.8-4.6l-3.2 2.7m3.2-2.7l3.4 2.1m-4.2 2.5l-1.7 3.3m2.5-3.3l2.1 3.3"
+              fill="none"
+              stroke="#f7f0e2"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+          <div class="brand-text">
+            <span class="brand-name">起身助手</span>
+            <span class="brand-sub">久坐提醒 · 本机运行</span>
+          </div>
+        </div>
+
+        <nav class="tabs" role="tablist" aria-label="看板页面">
+          <button
+            class="tab is-active"
+            id="tab-overview"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-overview"
+            data-tab="overview"
+          >
+            概览
+          </button>
+          <button
+            class="tab"
+            id="tab-settings"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-settings"
+            data-tab="settings"
+          >
+            设置
+          </button>
+        </nav>
+
+        <div class="window-actions">
+          <button
+            class="window-btn"
+            id="win-minimize"
+            type="button"
+            aria-label="最小化看板"
+            title="最小化"
+          >
+            <svg viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M2 6h8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
+          </button>
+          <button
+            class="window-btn window-btn-close"
+            id="win-close"
+            type="button"
+            aria-label="收起看板"
+            title="收起看板，可从托盘重新打开"
+          >
+            <svg viewBox="0 0 12 12" aria-hidden="true">
+              <path
+                d="M3 3l6 6M9 3L3 9"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section
+          class="panel"
+          id="panel-overview"
+          role="tabpanel"
+          aria-labelledby="tab-overview"
+        >
+          <div class="dashboard-grid">
+            <article class="card hero">
+              <div class="hero-head">
+                <span class="status-pill" id="hero-status" aria-live="polite">准备中</span>
+                <span class="hero-period" id="hero-period">工作时段 09:00–18:00</span>
+              </div>
+
+              <div class="hero-clock-row">
+                <span class="hero-clock numeric" id="hero-clock">--:--</span>
+                <div class="hero-clock-meta">
+                  <span class="hero-caption" id="hero-caption">正在读取状态</span>
+                  <span class="hero-sub" id="hero-sub">每 45 分钟坐姿 · 5 分钟起身</span>
+                </div>
+              </div>
+
+              <div class="hero-progress" aria-hidden="true">
+                <svg viewBox="0 0 100 6" preserveAspectRatio="none">
+                  <rect class="track" x="0" y="0" width="100" height="6" rx="3"></rect>
+                  <rect
+                    class="fill"
+                    id="hero-progress"
+                    x="0"
+                    y="0"
+                    width="0"
+                    height="6"
+                    rx="3"
+                  ></rect>
+                </svg>
+              </div>
+
+              <div class="hero-schedule">
+                <span class="schedule-dot" aria-hidden="true"></span>
+                <span id="hero-schedule">计划下一次起身</span>
+              </div>
+
+              <div class="hero-tip">
+                <span class="tip-label">起身提示</span>
+                <p id="hero-tip">起身慢走几步，让身体换个姿势。</p>
+              </div>
+
+              <div class="hero-actions">
+                <button class="btn btn-primary" id="hero-primary" type="button" hidden>
+                  暂停 30 分钟
+                </button>
+                <button class="btn btn-secondary" id="hero-secondary" type="button" hidden>
+                  稍后 5 分钟
+                </button>
+              </div>
+              <p class="hero-error" id="hero-error" role="alert" hidden></p>
+            </article>
+
+            <article class="card week-card">
+              <div class="week-head">
+                <div>
+                  <h2>本周概览</h2>
+                  <p class="week-range" id="week-range">周一至周日</p>
+                </div>
+                <span class="week-tag">坐姿时长</span>
+              </div>
+              <svg
+                class="week-chart"
+                id="week-chart"
+                viewBox="0 0 320 164"
+                role="img"
+                aria-label="本周每日坐姿时长"
+              ></svg>
+              <div class="week-metrics">
+                <div class="week-metric">
+                  <span>本周坐姿</span>
+                  <strong class="numeric" id="week-sitting">0 分钟</strong>
+                </div>
+                <div class="week-metric">
+                  <span>起身完成率</span>
+                  <strong class="numeric" id="week-rate">—</strong>
+                </div>
+                <div class="week-metric">
+                  <span>延后次数</span>
+                  <strong class="numeric" id="week-snoozes">0</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="stats-grid">
+            <article class="card stat-card">
+              <span class="stat-label">今日坐姿</span>
+              <strong class="stat-value numeric" id="today-sitting">0 分钟</strong>
+              <span class="stat-note">只统计工作时段内</span>
+            </article>
+            <article class="card stat-card">
+              <span class="stat-label">今日提醒</span>
+              <strong class="stat-value numeric" id="today-reminders">0 次</strong>
+              <span class="stat-note">含延后后的再次提醒</span>
+            </article>
+            <article class="card stat-card">
+              <span class="stat-label">起身完成</span>
+              <strong class="stat-value numeric" id="today-breaks">0 / 0</strong>
+              <span class="stat-note">完成 / 开始</span>
+            </article>
+            <article class="card stat-card">
+              <span class="stat-label">今日延后</span>
+              <strong class="stat-value numeric" id="today-snoozes">0 次</strong>
+              <span class="stat-note">调整节奏很正常</span>
+            </article>
+          </div>
+
+          <footer class="board-footer">
+            <p id="footer-disclaimer">
+              本工具仅提供久坐提醒，不构成医疗建议。若疼痛、麻木或无力持续或加重，请停止活动并咨询医生。
+            </p>
+            <span class="footer-local">数据仅保存在本机</span>
+          </footer>
+        </section>
+
+        <section
+          class="panel"
+          id="panel-settings"
+          role="tabpanel"
+          aria-labelledby="tab-settings"
+          hidden
+        >
+          <form id="settings-form" novalidate>
+            <div class="settings-grid">
+              <article class="card settings-card">
+                <h2>工作节奏</h2>
+                <p class="settings-help">坐一段时间后起身走动。请按自己的情况调整，不必追求更长。</p>
+                <div class="number-fields">
+                  <label class="field" for="sit-minutes">
+                    <span>坐姿时长</span>
+                    <span class="field-input">
+                      <input
+                        id="sit-minutes"
+                        name="sitMinutes"
+                        type="number"
+                        min="5"
+                        max="180"
+                        step="1"
+                        inputmode="numeric"
+                        required
+                      />
+                      <span class="field-unit">分钟</span>
+                    </span>
+                  </label>
+                  <label class="field" for="stand-minutes">
+                    <span>起身时长</span>
+                    <span class="field-input">
+                      <input
+                        id="stand-minutes"
+                        name="standMinutes"
+                        type="number"
+                        min="1"
+                        max="60"
+                        step="1"
+                        inputmode="numeric"
+                        required
+                      />
+                      <span class="field-unit">分钟</span>
+                    </span>
+                  </label>
+                </div>
+                <p class="field-note">建议范围：坐姿 5–180 分钟，起身 1–60 分钟。</p>
+              </article>
+
+              <article class="card settings-card">
+                <h2>工作时间</h2>
+                <fieldset class="field-group">
+                  <legend class="field-label">工作日</legend>
+                  <div class="weekday-row">
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="1" />
+                      <span>一</span>
+                    </label>
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="2" />
+                      <span>二</span>
+                    </label>
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="3" />
+                      <span>三</span>
+                    </label>
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="4" />
+                      <span>四</span>
+                    </label>
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="5" />
+                      <span>五</span>
+                    </label>
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="6" />
+                      <span>六</span>
+                    </label>
+                    <label class="weekday-chip">
+                      <input type="checkbox" name="workday" value="0" />
+                      <span>日</span>
+                    </label>
+                  </div>
+                </fieldset>
+                <div class="time-row">
+                  <label class="field" for="work-start">
+                    <span>上班时间</span>
+                    <input id="work-start" name="workStart" type="time" required />
+                  </label>
+                  <label class="field" for="work-end">
+                    <span>下班时间</span>
+                    <input id="work-end" name="workEnd" type="time" required />
+                  </label>
+                </div>
+                <label class="switch-row lunch-switch">
+                  <span class="switch-copy">
+                    <strong>午休暂停</strong>
+                    <small>午休期间不提醒，也不计入坐姿</small>
+                  </span>
+                  <input id="lunch-enabled" name="lunchEnabled" type="checkbox" />
+                  <span class="switch-track" aria-hidden="true"></span>
+                </label>
+                <div class="time-row" id="lunch-times">
+                  <label class="field" for="lunch-start">
+                    <span>午休开始</span>
+                    <input id="lunch-start" name="lunchStart" type="time" required />
+                  </label>
+                  <label class="field" for="lunch-end">
+                    <span>午休结束</span>
+                    <input id="lunch-end" name="lunchEnd" type="time" required />
+                  </label>
+                </div>
+              </article>
+
+              <article class="card settings-card">
+                <h2>显示与提醒</h2>
+                <fieldset class="field-group">
+                  <legend class="field-label">桌面形态</legend>
+                  <div class="mode-grid">
+                    <label class="mode-option">
+                      <input type="radio" name="display-mode" value="tray" />
+                      <svg class="mode-icon" viewBox="0 0 22 22" aria-hidden="true">
+                        <rect x="3" y="4" width="16" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                        <path d="M14 19h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                        <circle cx="17" cy="8" r="1.5" fill="currentColor"></circle>
+                      </svg>
+                      <span class="mode-title">仅托盘</span>
+                      <span class="mode-desc">最安静，只在托盘显示状态</span>
+                    </label>
+                    <label class="mode-option">
+                      <input type="radio" name="display-mode" value="widget" />
+                      <svg class="mode-icon" viewBox="0 0 22 22" aria-hidden="true">
+                        <rect x="3" y="5" width="16" height="12" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                        <path d="M7 10h6M7 13h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                      </svg>
+                      <span class="mode-title">置顶小挂件</span>
+                      <span class="mode-desc">常驻角落，倒计时一目了然</span>
+                    </label>
+                    <label class="mode-option">
+                      <input type="radio" name="display-mode" value="orb" />
+                      <svg class="mode-icon" viewBox="0 0 22 22" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+                        <circle cx="11" cy="11" r="3" fill="currentColor"></circle>
+                      </svg>
+                      <span class="mode-title">悬浮球</span>
+                      <span class="mode-desc">占用空间最小，可拖动到桌边</span>
+                    </label>
+                    <label class="mode-option">
+                      <input type="radio" name="display-mode" value="board" />
+                      <svg class="mode-icon" viewBox="0 0 22 22" aria-hidden="true">
+                        <rect x="3" y="4" width="16" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"></rect>
+                        <path d="M3 8h16M8 8v10" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+                      </svg>
+                      <span class="mode-title">桌面看板</span>
+                      <span class="mode-desc">完整概览、统计与设置</span>
+                    </label>
+                  </div>
+                </fieldset>
+                <label class="switch-row">
+                  <span class="switch-copy">
+                    <strong>提示音</strong>
+                    <small>提醒时播放轻柔双音，不额外弹系统通知</small>
+                  </span>
+                  <input id="sound-enabled" name="soundEnabled" type="checkbox" />
+                  <span class="switch-track" aria-hidden="true"></span>
+                </label>
+                <label class="switch-row">
+                  <span class="switch-copy">
+                    <strong>看板置顶</strong>
+                    <small>让桌面看板始终显示在其他窗口上方</small>
+                  </span>
+                  <input id="board-on-top" name="boardAlwaysOnTop" type="checkbox" />
+                  <span class="switch-track" aria-hidden="true"></span>
+                </label>
+                <label class="switch-row">
+                  <span class="switch-copy">
+                    <strong>开机自启</strong>
+                    <small>登录 Windows 后按当前形态出现，不抢焦点</small>
+                  </span>
+                  <input id="auto-start" name="autoStart" type="checkbox" />
+                  <span class="switch-track" aria-hidden="true"></span>
+                </label>
+                <p class="field-note" id="autostart-note" hidden>
+                  当前是开发模式，不会写入系统开机启动项；安装版会正常生效。
+                </p>
+              </article>
+
+              <article class="card settings-card">
+                <h2>本机数据</h2>
+                <p class="settings-help">
+                  统计只保存在当前电脑，保留最近 30 天，不包含健康身份信息，也不会联网。
+                </p>
+                <div class="data-actions">
+                  <button class="btn btn-danger" id="clear-stats" type="button">
+                    清除全部统计
+                  </button>
+                  <span class="data-hint" id="clear-hint">删除后无法恢复</span>
+                </div>
+                <div class="about-row">
+                  <span>版本</span>
+                  <span class="numeric" id="app-version">0.1.0</span>
+                </div>
+                <p class="settings-help safety-note">
+                  本工具只提供通用久坐提醒，不构成医疗建议。若疼痛、麻木或无力持续或加重，请停止活动并咨询医生。
+                </p>
+                <p class="field-note test-note" id="test-note" hidden>
+                  测试模式：计时已加速，仅用于界面验证。
+                </p>
+              </article>
+            </div>
+
+            <div class="settings-footer">
+              <span class="save-status" id="save-status" role="status"></span>
+              <button class="btn btn-primary btn-save" id="save-settings" type="submit">
+                保存设置
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="board.js"></script>
+  </body>
+</html>
